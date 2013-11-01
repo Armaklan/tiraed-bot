@@ -7,3 +7,4 @@
 *.sublime-*
 test/replay*
 test/visu/replay.js
+*.zip

@@ -211,7 +211,7 @@ class Planet {
 */
 class EconomicPlanet extends Planet {
     def income
-    def poids = 0.2
+    def poids = 0.8
 
     static parse(tokens, planets) {
         new EconomicPlanet(

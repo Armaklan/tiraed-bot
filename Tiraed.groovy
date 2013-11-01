@@ -7,10 +7,10 @@
         - Distance (priorité aux plus proche)
 */
 class Tiraed extends Bot {
-
+    
 	def doTurn(data) {
         game.start_turn(data)
-        game.planets.my_military().findAll{it.num_ships > 8}.each{ source ->
+        game.planets.my_military().findAll{it.num_ships > 15}.each{ source ->
         	def target = getWeakestScoreWithDistancePlanet(source)
         	sendHalfShipInPlanet(source, target)
         };

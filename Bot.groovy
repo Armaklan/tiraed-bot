@@ -61,7 +61,7 @@ class Bot {
 
     def getWeakestScoreWithDistancePlanet(source) {
         return game.planets.all().min({ a,b ->
-            (a.num_ships + getDistanceScore(source, a))* a.poids <=> (b.num_ships + getDistanceScore(source, b)) * b.poids
+            (a.num_ships + getDistanceScore(source, a) * 1.5 )* a.poids <=> (b.num_ships + getDistanceScore(source, b) * 1.5) * b.poids
         })
     }
 
