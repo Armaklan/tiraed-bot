@@ -1,9 +1,14 @@
 #!/usr/bin/env groovy
+def FILENAME = "tiraed.zip"
 
-def excludes="**/*.swp, somefile.txt, somedir/**"
+try {
+  new File(FILENAME).delete()  
+} catch (Exception e) {
+  println "Pas d archive a supprimer"
+}
 
 def ant = new AntBuilder()
-ant.zip( destFile: "tiraed.zip" ) {
+ant.zip( destFile: FILENAME ) {
   fileset( dir: './' ) {
     include( name: "Bot.groovy" )
     include( name: "MyBot.groovy" )
