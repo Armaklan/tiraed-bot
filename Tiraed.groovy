@@ -11,8 +11,18 @@ class Tiraed extends Bot {
 	def doTurn(data) {
         game.start_turn(data)
         game.planets.my_military().findAll{it.num_ships > 8}.each{ source ->
-        	def target = getWeakestScoreWithDistancePlanet(source)
-        	sendHalfShipInPlanet(source, target)
+           
+            def targets = getWeakestScoreWithDistancePlanet(source)
+
+            def source_ship = source.num_ships
+            targets.each{ target -> 
+                if(source_ship > 8) {
+                    def sendShip = [(source_ship / 2).toInteger(), 20].min()
+                    sendShipInPlanet(source, target, sendShip)
+                    source_ship -= sendShip
+                }
+            }
+           
         };
         game.finish_turn()
     }

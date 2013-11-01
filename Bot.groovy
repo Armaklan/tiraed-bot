@@ -60,7 +60,7 @@ class Bot {
     }
 
     def getWeakestScoreWithDistancePlanet(source) {
-        return game.planets.all().min({ a,b ->
+        return game.planets.all().sort({ a,b ->
             (a.num_ships + getDistanceScore(source, a) * 1.3 )* a.poids <=> (b.num_ships + getDistanceScore(source, b) * 1.3) * b.poids
         })
     }
@@ -69,6 +69,12 @@ class Bot {
         if ((source != null) && (dest != null)) {
             def num_ships = (source.num_ships / 2).toInteger()
             game.issue_order(source.id, dest.id, num_ships)
+        }
+    }
+
+    def sendShipInPlanet(source, dest, ships) {
+        if ((source != null) && (dest != null)) {
+            game.issue_order(source.id, dest.id, ships)
         }
     }
 
