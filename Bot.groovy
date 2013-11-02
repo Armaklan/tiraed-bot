@@ -79,7 +79,8 @@ class Bot {
                 if(fleet.owner == b.owner) b.num_ships += fleet.num_ships
                 else b.num_ships -= fleet.num_ships
             }
-            (a.num_ships + getDistanceScore(source, a) * 3 )* a.poids <=> (b.num_ships + getDistanceScore(source, b) * 3) * b.poids
+
+            (a.num_ships + getDistanceScore(source, a) * 2) * a.poids <=> (b.num_ships + getDistanceScore(source, b) * 2) * b.poids
         })
     }
 

@@ -18,20 +18,37 @@ class Tiraed extends Bot {
 
     def prepareOrders(game) {
         def orders = []
-        game.planets.my_military().findAll{it.num_ships > 8}.each{ source ->
+        game.planets.my_military().findAll{it.num_ships > 6}.each{ source ->
            
             def targets = getWeakestVirtualScorePlanet(source)
 
             def source_ship = source.num_ships
             targets.each{ target -> 
-                if(source_ship > 8) {
+                if(source_ship > 6) {
                     if (target.id != source.id) {
-                        def sendShip = [(source_ship / 2).toInteger(), 20].min()
-                        orders.add(new Order(
-                            source: source,
-                            target: target,
-                            ships: sendShip
-                        ));
+                        def sendShip = [(source_ship / 1.5).toInteger(), target.num_ships + 10].min()
+                        if(sendShip < 0 ) {
+                            sendShip = 5
+                        }
+                        if ( ( target.isEnnemy() || target.num_ships < 40)){
+
+                            orders.add(new Order(
+                                source: source,
+                                target: target,
+                                ships: sendShip
+                            ))
+                            game.fleets.add(
+                                new Fleet(
+                                    owner: Constant.MY_ID,
+                                    num_ships: sendShip,
+                                    sourcePlanet: source.id,
+                                    destinationPlanet: target.id,
+                                    totalTripLength: 20,
+                                    turnsRemaining: 0,
+                                    military: true
+                                )
+                            )
+                        }
                         source_ship -= sendShip
                     }
                 }

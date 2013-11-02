@@ -195,6 +195,8 @@ class FleetList extends ArrayList {
 *  A Planet, mother class.
 **/ 
 class Planet {
+    final MY_ID = Constant.MY_ID
+    
     def id 
     def owner
     def num_ships
@@ -204,6 +206,7 @@ class Planet {
 
     def isMilitary() { this instanceof MilitaryPlanet }
     def isEconomic() { this instanceof EconomicPlanet }
+    def isEnnemy() { return this.owner != MY_ID; }
 
 }
 
@@ -212,7 +215,7 @@ class Planet {
 */
 class EconomicPlanet extends Planet {
     def income
-    def poids = 1.2
+    def poids = 1.4
 
     static parse(tokens, planets) {
         new EconomicPlanet(
