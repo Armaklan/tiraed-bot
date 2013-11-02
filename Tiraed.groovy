@@ -18,7 +18,7 @@ class Tiraed extends Bot {
 
     def prepareOrders(game) {
         def orders = []
-        game.planets.my_military().findAll{it.num_ships > 15}.each{ source ->
+        game.planets.military.my().findAll{it.num_ships > 10}.each{ source ->
            
             def targets = getWeakestVirtualScorePlanet(source)
 

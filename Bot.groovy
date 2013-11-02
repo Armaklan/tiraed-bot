@@ -26,25 +26,25 @@ class Bot {
     }
 
     def getMyStrongestPlanet() {
-        return game.planets.my_military().max({ a,b ->
+        return game.planets.military.my().max({ a,b ->
             a.num_ships <=> b.num_ships
         })
     } 
 
     def getMyWeakestPlanet() {
-        return game.planets.my_all().min({ a,b ->
+        return game.planets.my().min({ a,b ->
             a.num_ships <=> b.num_ships
         })
     }
 
     def getOpposantWeakestPlanet() {
-        return game.planets.others_all().min({ a,b ->
+        return game.planets.others().min({ a,b ->
             a.num_ships <=> b.num_ships
         })
     }
 
     def getOthersWeakestScorePlanet() {
-        return game.planets.others_all().min({ a,b ->
+        return game.planets.others().min({ a,b ->
             a.num_ships * a.poids <=> b.num_ships * b.poids
         })
     }
@@ -70,12 +70,12 @@ class Bot {
     */
     def getWeakestVirtualScorePlanet(source) {
         return game.planets.all().sort({ a,b ->
-            game.fleets.to_id(a.id).each{ fleet ->
+            game.fleets.toId(a.id).each{ fleet ->
                 if(fleet.owner == a.owner) a.num_ships += fleet.num_ships
                 else a.num_ships -= fleet.num_ships
             }
 
-            game.fleets.to_id(b.id).each{ fleet ->
+            game.fleets.toId(b.id).each{ fleet ->
                 if(fleet.owner == b.owner) b.num_ships += fleet.num_ships
                 else b.num_ships -= fleet.num_ships
             }
