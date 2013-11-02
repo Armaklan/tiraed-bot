@@ -187,6 +187,7 @@ class FleetList extends ArrayList {
     def ennemy_all() { this.all().findAll{ it.owner > MY_ID } }
 
     def for_id_all(id) { this.all().findAll{ it.owner > id } }
+    def to_id(id) { this.all().findAll{ it.destinationPlanet == id}; }
     
 }
 
@@ -243,6 +244,9 @@ class MilitaryPlanet extends Planet {
  An aggressive fleet
 */
 class Fleet {
+
+    final MY_ID = Constant.MY_ID
+
     def owner
     def num_ships
     def sourcePlanet
@@ -250,6 +254,8 @@ class Fleet {
     def totalTripLength
     def turnsRemaining
     def military
+
+    def isEnnemy() { return this.owner != MY_ID; }
 
     static parse(tokens) {
         new Fleet(
@@ -263,7 +269,11 @@ class Fleet {
     }
 }
 
-
+class Order {
+    def source
+    def target
+    def ships
+}
 
 /*
     Constant class with :

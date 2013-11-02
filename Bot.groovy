@@ -65,6 +65,24 @@ class Bot {
         })
     }
 
+    /*
+    Compte les flottes en cours de trajet
+    */
+    def getWeakestVirtualScorePlanet(source) {
+        return game.planets.all().sort({ a,b ->
+            game.fleets.to_id(a.id).each{ fleet ->
+                if(fleet.owner == a.owner) a.num_ships += fleet.num_ships
+                else a.num_ships -= fleet.num_ships
+            }
+
+            game.fleets.to_id(b.id).each{ fleet ->
+                if(fleet.owner == b.owner) b.num_ships += fleet.num_ships
+                else b.num_ships -= fleet.num_ships
+            }
+            (a.num_ships + getDistanceScore(source, a) * 3 )* a.poids <=> (b.num_ships + getDistanceScore(source, b) * 3) * b.poids
+        })
+    }
+
     def sendHalfShipInPlanet(source, dest) {
         if ((source != null) && (dest != null)) {
             def num_ships = (source.num_ships / 2).toInteger()

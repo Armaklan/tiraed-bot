@@ -8,23 +8,41 @@
 */
 class Tiraed extends Bot {
     
+
 	def doTurn(data) {
         game.start_turn(data)
+        def orders = prepareOrders(game);
+        sendOrders(orders);
+        game.finish_turn()
+    }
+
+    def prepareOrders(game) {
+        def orders = []
         game.planets.my_military().findAll{it.num_ships > 8}.each{ source ->
            
-            def targets = getWeakestScoreWithDistancePlanet(source)
+            def targets = getWeakestVirtualScorePlanet(source)
 
             def source_ship = source.num_ships
             targets.each{ target -> 
                 if(source_ship > 8) {
-                    def sendShip = [(source_ship / 2).toInteger(), 20].min()
-                    sendShipInPlanet(source, target, sendShip)
-                    source_ship -= sendShip
+                    if (target.id != source.id) {
+                        def sendShip = [(source_ship / 2).toInteger(), 20].min()
+                        orders.add(new Order(
+                            source: source,
+                            target: target,
+                            ships: sendShip
+                        ));
+                        source_ship -= sendShip
+                    }
                 }
             }
            
         };
-        game.finish_turn()
+        return orders;
+    }
+
+    def sendOrders(orders) {
+        orders.each{ order -> sendShipInPlanet(order.source, order.target, order.ships) };
     }
 
 }
