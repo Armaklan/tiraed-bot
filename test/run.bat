@@ -7,9 +7,7 @@ REM TODO :
 REM    - specialiser le run pour chaque StarterKit
 REM    - Corriger l'ouverture du navigateur sur le replay
 
-
 REM Exemple d'appel : run map1.txt "node MyBot.js" "php MyBot.php"
-
 
 REM Load config
 for /F "tokens=1,* delims==" %%A in (run.conf) do (
@@ -83,7 +81,6 @@ echo Vous pouvez regarder le replay en ouvrant le fichier visu/index.html
 echo ====================================================================
 echo ====================================================================
 echo.
-pause
 goto end
 
 :error
@@ -93,13 +90,11 @@ type %err_file%
 echo.
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo.
-pause
 goto end
 
 :usage
 echo Wrong usage
 echo Usage : run.bat MapName "command for MyFirstBot" "command for MySecondBot"
-pause
 goto end
 
 :config_error
@@ -111,7 +106,5 @@ echo.
 echo Verifiez le fichier 'run.conf'
 echo.
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-echo.
-pause
 
 :end
