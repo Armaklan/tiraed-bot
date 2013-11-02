@@ -45,8 +45,10 @@ if errorlevel 1 (
 REM Define other bots
 set bot1="java -cp engine.jar six.challenge.bot.RageBot"
 set bot2="java -cp engine.jar six.challenge.bot.LooterBot"
-set bot3="groovy -cp ../ ../OldBot.groovy"
-set bot4="groovy -cp ../ ../OldBot.groovy"
+set bot3="java -cp engine.jar six.challenge.bot.RageBot"
+set bot4="java -cp engine.jar six.challenge.bot.LooterBot"
+REM set bot3="groovy -cp ../ ../OldBot.groovy"
+REM set bot4="groovy -cp ../ ../OldBot.groovy"
 
 echo Lancement de la partie a %nb_players% joueurs sur la carte %map%
 echo.
