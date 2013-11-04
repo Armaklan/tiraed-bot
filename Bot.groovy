@@ -8,7 +8,7 @@
      
      There is already a basic strategy in place here. You can use it as a
      starting point, or you can throw it out entirely and replace it with
-     your own.
+     your own.get
  @author: Zuberl
 */
 
@@ -55,21 +55,19 @@ class Bot {
         })
     }
 
-    def getDistanceScore(source, destination) {
-        game.distance(source, destination) * 0.8
-    }
-
     def getWeakestScoreWithDistancePlanet(source) {
-        return game.planets.all().sort({ a,b ->
-            (a.num_ships + getDistanceScore(source, a) * 1.3 )* a.poids <=> (b.num_ships + getDistanceScore(source, b) * 1.3) * b.poids
+        def collection = game.planets.others().sort({ a,b ->
+            source.getScoreTo(a) <=> source.getScoreTo(b)
         })
+        collection.remove(source)
+        return collection
     }
 
     /*
     Compte les flottes en cours de trajet
     */
     def getWeakestVirtualScorePlanet(source) {
-        return game.planets.all().sort({ a,b ->
+        return game.planets.others().sort({ a,b ->
             game.fleets.toId(a.id).each{ fleet ->
                 if(fleet.owner == a.owner) a.num_ships += fleet.num_ships
                 else a.num_ships -= fleet.num_ships
@@ -80,7 +78,7 @@ class Bot {
                 else b.num_ships -= fleet.num_ships
             }
 
-            (a.num_ships + getDistanceScore(source, a) * 2) * a.poids <=> (b.num_ships + getDistanceScore(source, b) * 2) * b.poids
+            (a.num_ships + getDistanceScore(source, a) * 15) * a.poids <=> (b.num_ships + getDistanceScore(source, b) * 15) * b.poids
         })
     }
 

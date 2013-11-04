@@ -103,7 +103,7 @@ class Game {
     /*
         Calcul distance beetwen to planets
     */
-    def distance(source, destination) {
+    static def distance(source, destination) {
         def dx = source.x - destination.x
         def dy = source.y - destination.y
         return Math.ceil(Math.sqrt(dx * dx + dy * dy))
@@ -117,16 +117,9 @@ class Game {
             line = line.split("#")[0] //remove comments?!
             def tokens = line.split(" ")
             if (tokens.size() > 1) { // remove empty strings
-                if (tokens[0] == "M"){
-                    if (tokens.size() == 5){
-                        def p = MilitaryPlanet.parse(tokens, planets) 
-                        planets.add(p)
-                    }     
-                } else if (tokens[0] == "E") {
-                    if (tokens.size() == 6) {
-                        def p = EconomicPlanet.parse(tokens, planets) 
-                        planets.add(p)
-                    }   
+                if (["M", "E"].contains(tokens[0])) {
+                    def p = Planet.parse(tokens, planets)
+                    planets.add(p)
                 } else if ((tokens[0] == "F") || (tokens[0] == "R")) {
                     if (tokens.size() == 7) {
                         def f = Fleet.parse(tokens)
@@ -145,8 +138,8 @@ class Game {
 */
 class PlanetsList extends ArrayList {
 
-    final NEUTRAL_ID = Constant.NEUTRAL_ID
-    final MY_ID = Constant.MY_ID
+    final static NEUTRAL_ID = Constant.NEUTRAL_ID
+    final static MY_ID = Constant.MY_ID
 
     def all() { this }
 
@@ -215,6 +208,22 @@ class Planet {
     def isEconomic() { this instanceof EconomicPlanet }
     def isEnnemy() { return this.owner != MY_ID; }
 
+    static parse(tokens, planets) {
+        if (tokens[0] == "M"){
+            if (tokens.size() == 5){
+                return MilitaryPlanet.parse(tokens, planets) 
+            }     
+        } else if (tokens[0] == "E") {
+            if (tokens.size() == 6) {
+                return EconomicPlanet.parse(tokens, planets) 
+            }
+        }   
+    }
+
+    def getScoreTo(Planet destination) {
+        Math.ceil((destination.num_ships + Game.distance(this, destination) * 2 ) * destination.poids)
+    }
+
 }
 
 /*
@@ -222,7 +231,7 @@ class Planet {
 */
 class EconomicPlanet extends Planet {
     def income
-    def poids = 1.4
+    def poids = 1.2
 
     static parse(tokens, planets) {
         new EconomicPlanet(
